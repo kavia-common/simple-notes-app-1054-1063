@@ -1,7 +1,7 @@
 import type { NextConfig } from "next";
 
-const nextConfig: NextConfig = {
-  output: "export",
-};
+// Static export is not compatible with app directory and runtime features (such as useRouter).
+// Removing 'output: "export"' to allow default Next.js SSR/ISR behavior.
+const nextConfig: NextConfig = {};
 
 export default nextConfig;

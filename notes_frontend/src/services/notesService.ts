@@ -1,8 +1,19 @@
 import { Note } from "@/utils/types";
 
+/**
+ * Helper to check API URL config for all note requests.
+ */
+function getApiUrl(): string {
+  if (!process.env.NEXT_PUBLIC_API_URL) {
+    console.error("NEXT_PUBLIC_API_URL is not defined. Please set it in your .env file.");
+    throw new Error("NEXT_PUBLIC_API_URL is missing.");
+  }
+  return process.env.NEXT_PUBLIC_API_URL;
+}
+
 // PUBLIC_INTERFACE
 export async function getNotes(token: string, search?: string): Promise<Note[]> {
-  let url = process.env.NEXT_PUBLIC_API_URL + "/notes";
+  let url = getApiUrl() + "/notes";
   if (search) url += "?search=" + encodeURIComponent(search);
   const res = await fetch(url, {
     headers: { Authorization: "Bearer " + token }
@@ -13,7 +24,7 @@ export async function getNotes(token: string, search?: string): Promise<Note[]> 
 
 // PUBLIC_INTERFACE
 export async function getNote(token: string, id: string): Promise<Note | null> {
-  const res = await fetch(process.env.NEXT_PUBLIC_API_URL + `/notes/${id}`, {
+  const res = await fetch(getApiUrl() + `/notes/${id}`, {
     headers: { Authorization: "Bearer " + token }
   });
   if (!res.ok) return null;
@@ -22,7 +33,7 @@ export async function getNote(token: string, id: string): Promise<Note | null> {
 
 // PUBLIC_INTERFACE
 export async function createNote(token: string, title: string, content: string): Promise<Note | null> {
-  const res = await fetch(process.env.NEXT_PUBLIC_API_URL + "/notes", {
+  const res = await fetch(getApiUrl() + "/notes", {
     method: "POST",
     headers: {
       "Authorization": "Bearer " + token,
@@ -36,7 +47,7 @@ export async function createNote(token: string, title: string, content: string):
 
 // PUBLIC_INTERFACE
 export async function updateNote(token: string, id: string, title: string, content: string): Promise<Note | null> {
-  const res = await fetch(process.env.NEXT_PUBLIC_API_URL + `/notes/${id}`, {
+  const res = await fetch(getApiUrl() + `/notes/${id}`, {
     method: "PUT",
     headers: {
       "Authorization": "Bearer " + token,
@@ -50,7 +61,7 @@ export async function updateNote(token: string, id: string, title: string, conte
 
 // PUBLIC_INTERFACE
 export async function deleteNote(token: string, id: string): Promise<boolean> {
-  const res = await fetch(process.env.NEXT_PUBLIC_API_URL + `/notes/${id}`, {
+  const res = await fetch(getApiUrl() + `/notes/${id}`, {
     method: "DELETE",
     headers: { "Authorization": "Bearer " + token }
   });

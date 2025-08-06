@@ -25,9 +25,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const data = localStorage.getItem("auth_user");
-    if (data) {
-      setUser(JSON.parse(data));
+    // Guard localStorage access for SSR/static build
+    if (typeof window !== "undefined") {
+      const data = localStorage.getItem("auth_user");
+      if (data) {
+        setUser(JSON.parse(data));
+      }
     }
     setIsLoading(false);
   }, []);
@@ -35,6 +38,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   // PUBLIC_INTERFACE
   const login = async (email: string, password: string) => {
     try {
+      if (!process.env.NEXT_PUBLIC_API_URL) {
+        console.error("NEXT_PUBLIC_API_URL is not defined. Please set it in your .env file.");
+        alert("Configuration error: NEXT_PUBLIC_API_URL is missing.");
+        return false;
+      }
       const res = await fetch(process.env.NEXT_PUBLIC_API_URL + "/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
