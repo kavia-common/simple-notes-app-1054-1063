@@ -1,26 +1,217 @@
 @import "tailwindcss";
 
 :root {
+  --color-primary: #2563eb;
+  --color-secondary: #64748b;
+  --color-accent: #facc15;
   --background: #ffffff;
   --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --sidebar-bg: #f6f7fa;
+  --sidebar-border: #e5e7eb;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Sidebar and main layout */
+.note-layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* Sidebar styling */
+.sidebar {
+  background: var(--sidebar-bg);
+  border-right: 1px solid var(--sidebar-border);
+  width: 260px;
+  padding: 1.5rem 1rem 1.5rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+}
+
+.sidebar-header {
+  color: var(--color-primary);
+  font-size: 1.4rem;
+  font-weight: bold;
+  letter-spacing: 0.3px;
+}
+
+.sidebar .btn {
+  background: var(--color-primary);
+  color: #fff;
+  padding: 0.5rem 0.9rem;
+  border-radius: 0.4rem;
+  font-size: 0.98rem;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.sidebar .btn-accent {
+  background: var(--color-accent);
+  color: var(--foreground);
+}
+.sidebar .btn:hover {
+  background: #1741a9;
+}
+
+.sidebar-user {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 1rem;
+  color: var(--color-secondary);
+  margin-top: auto;
+  margin-bottom: 1.3rem;
+}
+
+.sidebar-search {
+  width: 100%;
+  background: #f3f4f6;
+  border-radius: 0.4rem;
+  border: 1px solid #e5e7eb;
+  padding: 0.5rem;
+}
+
+.note-list {
+  flex: 1;
+  overflow-y: auto;
+  margin-top: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.note-list-item {
+  background: none;
+  border: none;
+  font: inherit;
+  color: var(--foreground);
+  padding: 0.55rem 0.5rem;
+  border-radius: 0.35rem;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.13s;
+}
+
+.note-list-item.selected,
+.note-list-item:focus {
+  background: var(--color-primary);
+  color: #fff;
+}
+
+/* Main area */
+.main-content {
+  flex: 1;
+  padding: 2.5rem 2rem 2rem 2rem;
+  max-width: 900px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.note-title-input {
+  border: none;
+  background: none;
+  font-size: 2rem;
+  font-weight: 600;
+  outline: none;
+  color: var(--foreground);
+  margin-bottom: 0.7rem;
+}
+
+.note-content-input {
+  border: 1px solid #e5e7eb;
+  border-radius: 0.35rem;
+  padding: 1.1rem;
+  font-size: 1.1rem;
+  min-height: 220px;
+  background: #f3f4f6;
+  outline: none;
+  color: var(--foreground);
+  margin-bottom: 1rem;
+  resize: vertical;
+}
+
+.form-btn-row {
+  display: flex;
+  gap: 0.8rem;
+  margin-top: 0.5rem;
+}
+.form-btn-row .btn {
+  border-radius: 0.35rem;
+  font-weight: 500;
+  font-size: 1.06rem;
+  padding: 0.55rem 1.3rem;
+}
+
+.note-meta {
+  font-size: 0.97rem;
+  color: var(--color-secondary);
+  margin-bottom: 1.2rem;
+}
+
+/* Auth pages */
+.auth-container {
+  min-height: 100vh;
+  display: grid;
+  place-content: center;
+  background: var(--background);
+}
+
+.auth-card {
+  background: #fff;
+  padding: 2.5rem 2rem;
+  border-radius: 0.7rem;
+  box-shadow: 0 1px 10px 1px rgba(24,36,60,0.04);
+  max-width: 370px;
+  width: 100%;
+}
+
+.auth-header {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  margin-bottom: 1.7rem;
+  text-align: center;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.auth-form input {
+  padding: 0.75rem;
+  border-radius: 0.35rem;
+  border: 1px solid #e5e7eb;
+  font-size: 1.06rem;
+  color: var(--foreground);
+  background: #fafaf9;
+}
+
+.auth-form .btn {
+  margin-top: 0.7rem;
+}
+
+@media (max-width: 900px) {
+  .note-layout {
+    flex-direction: column;
+  }
+  .sidebar {
+    flex-direction: row;
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid var(--sidebar-border);
+    padding: 1rem 1.2rem;
+    gap: 1.1rem;
+  }
+  .main-content {
+    padding: 1rem;
+  }
 }
